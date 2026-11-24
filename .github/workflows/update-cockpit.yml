@@ -2,8 +2,10 @@ name: Update Market Capitulation Cockpit
 
 on:
   schedule:
-    # 12:00 PM PST = 20:00 UTC (Mon-Fri)
-    - cron: '0 20 * * 1-5'
+    # Off-peak minutes avoid GitHub's top-of-hour (:00) cron queue delays:
+    # 11:53 AM PST (19:53 UTC) & 1:15 PM PST post-close (21:15 UTC), Mon-Fri
+    - cron: '53 19 * * 1-5'
+    - cron: '15 21 * * 1-5'
   workflow_dispatch:
 
 permissions:
@@ -40,7 +42,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: 'docs'
 
